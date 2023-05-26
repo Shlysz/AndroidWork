@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/Eblue" /> <!-- 设置输入框的背景颜色 -->
+    <corners android:radius="10dp" /> <!-- 设置圆角的大小 -->
+    <stroke
+            android:color="#E6E8EB"
+            android:width="0dp" />
+</shape>
