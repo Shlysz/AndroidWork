@@ -1,6 +1,7 @@
 package com.example.androidfinalwork;
 
 import android.util.Log;
+import androidx.appcompat.app.AlertDialog;
 import com.example.androidfinalwork.Service.UrlService;
 import com.example.androidfinalwork.entity.Account;
 import android.content.Intent;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("firstclick", "onClick: firstclick");
+                //Log.d("firstclick", "onClick: firstclick");
                 //获取输入框的值
                 String usernameValue=username.getText().toString();
                 String passwordValue=password.getText().toString();
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 Account account = new Account();
                 account.setUsername(usernameValue);
                 account.setPassword(passwordValue);
-                Log.d("click", "onClick: "+account.toString());
+               // Log.d("click", "onClick: "+account.toString());
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -53,6 +54,22 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(MainActivity.this, IndexActivity.class);
                             startActivity(intent);
                             finish();
+                        }
+                        else {
+                            //弹窗说明账号或密码错误
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                                            //标题
+                                            .setTitle("error")
+                                            //内容
+                                            .setMessage("账号或密码错误")
+                                            .setPositiveButton("确认", null)
+                                            .create();
+                                    alertDialog.show();
+                                }
+                            });
                         }
                     }
                 }).start();

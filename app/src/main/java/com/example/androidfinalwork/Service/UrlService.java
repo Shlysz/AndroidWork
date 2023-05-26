@@ -57,7 +57,6 @@ public class UrlService  {
        String postData = "username=" + account.username + "&password=" + account.password;
 
        try {
-
            HttpURLConnection connection = initPostRequest(url, postData);
            // 获取响应状态码
            int responseCode = connection.getResponseCode();
@@ -73,13 +72,17 @@ public class UrlService  {
                }
                reader.close();
                // 处理响应数据
-                //提取response中的key{key:"",message:""}
-                String responseStr = response.toString();
-                String[] responseArr = responseStr.split(",");
-                String[] keyArr = responseArr[0].split(":");
-                SendKey.key= keyArr[1].substring(1, keyArr[1].length()-1);
+                //提取response中的 message 类似从"{key:"...",message:"...."}"中
+                //提取message
+                String message=response.substring(response.indexOf("message")+10,response.indexOf("}")-1);
+                //如果message==“success”将key存入SendKey.key
+                if(message.equals("success")){
+                    SendKey.key=response.substring(response.indexOf("key")+6,response.indexOf("message")-3);
+                    connection.disconnect();
+                    return true;
+                }
                connection.disconnect();
-               return true;
+               return false;
            } else {
                // 处理请求失败的情况
                System.out.println("POST请求失败，响应码：" + responseCode);
